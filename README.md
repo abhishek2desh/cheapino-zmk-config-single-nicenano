@@ -22,3 +22,7 @@ For battery I have added a slim profile iphone se3 replacement (3500 mAH) which 
 
 On the Nice Nano, I have shorted the boosted charging pins. so max current is 300 mAH.
 
+Keyboard uses approximately 5mA per hour. So 200 mAh battery might last 2 days.
+
+I have added soft power off on system layer. holding it for 5 seconds should out the keyboard in off mode. Press reset to switch it On.
+
