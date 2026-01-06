@@ -1,4 +1,4 @@
 include:
-  - board: nice_nano_v2
+  - board: nice_nano
     shield: cheapinov2
 # there is no settingsreset (needed) for the XIAO
