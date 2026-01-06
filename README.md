@@ -9,7 +9,10 @@ layout has been ported from Totem which is a 38 Key layout. I might have missed 
 
 
 Hardware: Nice Nano v2 
-Important note. don't add pin headers to vcc pin on control board [near RST pin]. This pin corresponds to encoder on the shield. You can jump it on the shield from Right pin1 to D2 of Pro Micro.
+<img width="1300" height="829" alt="17677346491368836018415670621067" src="https://github.com/user-attachments/assets/68abd6e9-f334-4e61-9a81-c1ad9ed9c7cb" />
+
+!!!Important note!!!
+don't add pin headers to VCC pin on control board [near RST pin]. Refer pinouts above. This pin corresponds to encoder on the shield. You can jump it on the shield from Right pin1 to D2 of Pro Micro.
 
 Power on switch:
 I have opted for soft off feature from zmk so no dedicated power on switch. Instead using reset button on the controller itself to awaken the board.
