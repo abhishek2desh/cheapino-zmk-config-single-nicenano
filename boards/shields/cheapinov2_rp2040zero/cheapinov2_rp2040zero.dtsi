@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <dt-bindings/zmk/matrix_transform.h>
+#include "../cheapinov2/cheapinov2-layout.dtsi"
+
+&cheapino_layout {
+    transform = <&default_transform>;
+};
+
+/ {
+    chosen {
+        zmk,kscan = &cheapino_scan;
+        zmk,physical-layout = &cheapino_layout;
+        transform = <&default_transform>;
+    };
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <12>;
+        rows = <12>;
+        map = <
+                RC(0,5) RC(4,0) RC(0,4) RC(3,0) RC(0,3)    RC(6,9) RC(9,6) RC(6,10) RC(10,6) RC(6,11)
+                RC(1,5) RC(4,1) RC(1,4) RC(3,1) RC(1,3)    RC(7,9) RC(9,7) RC(7,10) RC(10,7) RC(7,11)
+                RC(2,5) RC(4,2) RC(2,4) RC(3,2) RC(2,3)    RC(8,9) RC(9,8) RC(8,10) RC(10,8) RC(8,11)
+                                RC(5,2) RC(5,1) RC(5,0)    RC(11,6) RC(11,7) RC(11,8)
+        >;
+    };
+
+    cheapino_scan: kscan0 {
+        compatible = "zmk,kscan-gpio-charlieplex";
+
+        gpios
+            // Left side (pins 0–5)
+            = <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 0: L-Row0 (GP27)
+            , <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 1: L-Row1 (GP28)
+            , <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 2: L-Row2 (GP29)
+            , <&gpio0 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 3: L-Col0 (GP14)
+            , <&gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 4: L-Col1 (GP15)
+            , <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 5: L-Col2 (GP26)
+
+            // Right side (pins 6–11)
+            , <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 6: R-Row0 (GP3)
+            , <&gpio0 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 7: R-Row1 (GP1)
+            , <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 8: R-Row2 (GP2)
+            , <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 9: R-Col0 (GP6)
+            , <&gpio0 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 10: R-Col1 (GP5)
+            , <&gpio0 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // Pin 11: R-Col2 (GP4)
+            ;
+    };
+};

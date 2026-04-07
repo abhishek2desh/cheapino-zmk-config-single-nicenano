@@ -1,0 +1,9 @@
+file_format: "1"
+id: cheapinov2_rp2040zero
+name: Cheapino v2 RP2040 Zero
+type: shield
+url: https://github.com/tompi/cheapino
+requires: [rp2040_zero]
+features:
+  - keys
+  - studio

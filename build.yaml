@@ -1,4 +1,6 @@
 include:
   - board: nice_nano_v2
     shield: cheapinov2
+  - board: rp2040_zero
+    shield: cheapinov2_rp2040zero
 # there is no settingsreset (needed) for the XIAO
