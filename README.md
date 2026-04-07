@@ -1,5 +1,7 @@
 # Cheapino v2 ZMK Config
 
+[![.github/workflows/build.yml](https://github.com/oslundstrom/cheapino-zmk-config-single-nicenano/actions/workflows/build.yml/badge.svg)](https://github.com/oslundstrom/cheapino-zmk-config-single-nicenano/actions/workflows/build.yml)
+
 ZMK firmware for the [Cheapino v2](https://github.com/tompi/cheapino) — a 36-key split keyboard.
 
 ## Current builds
