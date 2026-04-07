@@ -4,43 +4,90 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-ZMK firmware configuration for the **Cheapino v2** — a custom 36-key split keyboard using a single **nice!nano v2** controller with a charlieplex key matrix. The firmware is built by GitHub Actions using the official ZMK build workflow.
+ZMK firmware configuration for the **Cheapino v2** — a custom 36-key single-PCB keyboard. Two MCU targets are supported: **nice!nano v2** (BLE + USB) and **RP2040 Zero** (USB only). A **wireless split variant** with two independent halves and a USB dongle is planned (see below).
 
 ## Building
 
-Firmware is built via GitHub Actions — push to `main` and the workflow at `.github/workflows/build.yml` triggers the ZMK build pipeline automatically. There is no local build command; all compilation happens in CI.
+Firmware is built via GitHub Actions — push to `main`. No local build. Both targets are defined in `build.yaml`:
 
-The build target is defined in `build.yaml`:
-- Board: `nice_nano_v2`
-- Shield: `cheapinov2`
+```yaml
+- board: nice_nano/nrf52840/zmk   → shield: cheapinov2
+- board: rp2040_zero/rp2040/zmk  → shield: cheapinov2
+```
 
-## Key files
+## Shield structure
 
-- `boards/shields/cheapinov2/cheapinov2.keymap` — the keymap (layers, bindings, behavior config). **This is where most edits happen.**
-- `config/cheapinov2.conf` — top-level Kconfig flags (ZMK Studio enabled, battery reporting off)
-- `boards/shields/cheapinov2/cheapinov2.conf` — shield-level Kconfig
-- `boards/shields/cheapinov2/cheapinov2.dtsi` — GPIO pin assignments for the charlieplex matrix and the matrix transform
-- `boards/shields/cheapinov2/cheapinov2-layout.dtsi` — physical key positions (used by ZMK Studio for visual layout)
-- `config/west.yml` — pins ZMK to `zmkfirmware/zmk@main`
+```
+boards/shields/cheapinov2/
+├── cheapinov2.keymap          ← all layer/binding edits go here
+├── cheapinov2.dtsi            ← matrix transform + physical layout (board-agnostic)
+├── cheapinov2-layout.dtsi     ← physical key positions for ZMK Studio
+├── cheapinov2.conf            ← shield Kconfig (mouse, battery reporting)
+├── cheapinov2.zmk.yml         ← shield metadata
+└── boards/
+    ├── nice_nano_nrf52840_zmk.overlay   ← &pro_micro charlieplex GPIO pins
+    └── rp2040_zero_rp2040_zmk.overlay   ← &gpio0 charlieplex GPIO pins
 
-## Keymap architecture
+boards/rp2040_zero/            ← ZMK board variant (not in ZMK upstream)
+├── board.yml                  ← extends rp2040_zero with zmk variant
+├── Kconfig.rp2040_zero        ← selects ZMK_BOARD_COMPAT
+├── rp2040_zero_rp2040_zmk.dts
+└── rp2040_zero_rp2040_zmk_defconfig
 
-The keymap (`cheapinov2.keymap`) has **7 layers** accessed via `lt` (layer-tap) thumb keys:
+config/cheapinov2.conf         ← ZMK Studio + USB logging flags
+zephyr/module.yml              ← board_root: . (exposes boards/ to ZMK)
+```
 
-| Index | Name     | Left thumb activator |
-|-------|----------|----------------------|
-| 0     | BASE     | —                    |
-| 1     | MEDIA    | `lt 1 ESC`           |
-| 2     | NAV      | `lt 2 SPACE`         |
-| 3     | MOUSE    | `lt 3 TAB`           |
-| 4     | SYMBOL   | `lt 4 ENTER`         |
-| 5     | FUNCTION | `lt 5 DELETE`        |
-| 6     | NUMPAD   | `lt 6 BACKSPACE`     |
+To add a third MCU: create `boards/shields/cheapinov2/boards/<board_id>.overlay` with the kscan node.
 
-The BASE layer uses home-row mods (`&mt`) on both hands with `tap-preferred` flavor, short tapping term (150ms), and `require-prior-idle-ms` to avoid accidental mod activation during fast typing.
+## Keymap
 
-The physical layout is 3×5 per hand + 3 thumb keys per hand (36 keys total). The charlieplex matrix uses 12 GPIO pins on the nice!nano v2 (mapped via `pro_micro` aliases). Note: right-side rows 1 and 2 are swapped in routing — handled in the matrix transform.
+7 layers accessed via `lt` thumb keys. From left to right on each thumb cluster:
+
+| Left thumb | Layer | Right thumb | Layer |
+|------------|-------|-------------|-------|
+| `lt 1 ESC` | MEDIA | `lt 4 ENTER` | SYMBOL |
+| `lt 2 SPACE` | NAV | `lt 6 BACKSPACE` | NUMPAD |
+| `lt 3 TAB` | MOUSE | `lt 5 DELETE` | FUNCTION |
+
+HOME-ROW MODS on BASE layer: `&mt` with `tap-preferred`, 150ms tapping term, `require-prior-idle-ms = 150`.
+
+## Charlieplex matrix
+
+12 GPIO pins total (6 per side). The matrix transform encodes each key as `RC(driver_pin, reader_pin)`. Pin ordering: left rows 0-2, left cols 3-5, right rows 6-8, right cols 9-11. The nice!nano PCB has right-side rows 1+2 swapped in routing — compensated by the pin order in the overlay.
 
 ## ZMK Studio
 
-`CONFIG_ZMK_STUDIO=y` is set, so the firmware supports live keymap editing via ZMK Studio without reflashing.
+`CONFIG_ZMK_STUDIO=y` — live keymap editing without reflashing works on both targets.
+
+---
+
+## Planned: Wireless split variant
+
+Target architecture: two BLE peripheral halves + one USB central dongle. New repo or new shield in this repo (TBD).
+
+**Planned shield files:**
+```
+boards/shields/cheapino_wireless/
+├── cheapino_wireless.dtsi            ← transform, layout
+├── cheapino_wireless_left.overlay    ← kscan, OLED, battery
+├── cheapino_wireless_right.overlay
+├── cheapino_wireless_dongle.overlay  ← mock kscan, central role
+└── boards/
+    ├── nice_nano_nrf52840_zmk.overlay
+    └── nrf52840dongle_nrf52840_zmk.overlay
+```
+
+**Key config decisions to resolve before scaffolding:**
+- Charlieplex vs matrix driver — the Cheapino uses duplex (bidirectional) wiring; may need `zmk,kscan-gpio-matrix` scanned in two passes rather than the charlieplex driver.
+- Interrupt GPIO pin — one pin per half wired through 6× 1N4148 diodes for wake-from-sleep.
+- I2C pins for SSD1306 128×32 OLED display.
+- ZMK branch — check whether the deep-sleep central wake bug is fixed on `main` before pinning to v0.3.
+
+**Build targets (once ready):**
+```yaml
+- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_left
+- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_right
+- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_dongle
+- board: nrf52840dongle/nrf52840/zmk  shield: cheapino_wireless_dongle
+```
