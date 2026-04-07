@@ -1,0 +1,11 @@
+# Copyright (c) 2024 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+config SHIELD_CHEAPINO_WIRELESS_LEFT
+    def_bool $(shields_list_contains,cheapino_wireless_left)
+
+config SHIELD_CHEAPINO_WIRELESS_RIGHT
+    def_bool $(shields_list_contains,cheapino_wireless_right)
+
+config SHIELD_CHEAPINO_WIRELESS_DONGLE
+    def_bool $(shields_list_contains,cheapino_wireless_dongle)

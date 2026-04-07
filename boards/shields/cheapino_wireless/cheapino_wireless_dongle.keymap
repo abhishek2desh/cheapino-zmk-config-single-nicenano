@@ -1,0 +1,2 @@
+/* Wireless dongle keymap — shared with the wired build */
+#include "../cheapinov2/cheapinov2.keymap"

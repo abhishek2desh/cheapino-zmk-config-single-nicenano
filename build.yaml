@@ -1,6 +1,17 @@
 include:
+  # Wired builds
   - board: nice_nano/nrf52840/zmk
     shield: cheapinov2
   - board: rp2040_zero/rp2040/zmk
     shield: cheapinov2
-# there is no settingsreset (needed) for the XIAO
+  # Wireless split builds
+  - board: nice_nano/nrf52840/zmk
+    shield: cheapino_wireless_left
+  - board: nice_nano/nrf52840/zmk
+    shield: cheapino_wireless_right
+  - board: nice_nano/nrf52840/zmk
+    shield: cheapino_wireless_dongle
+  - board: nrf52840dongle/nrf52840/zmk
+    shield: cheapino_wireless_dongle
+  - board: nice_nano/nrf52840/zmk
+    shield: settings_reset

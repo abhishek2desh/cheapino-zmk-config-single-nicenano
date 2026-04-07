@@ -1,0 +1,7 @@
+file_format: "1"
+id: cheapino_wireless_right
+name: Cheapino Wireless Right
+type: shield
+url: https://github.com/tompi/cheapino
+features:
+  - keys

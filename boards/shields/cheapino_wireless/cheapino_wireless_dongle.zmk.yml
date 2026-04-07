@@ -1,0 +1,8 @@
+file_format: "1"
+id: cheapino_wireless_dongle
+name: Cheapino Wireless Dongle
+type: shield
+url: https://github.com/tompi/cheapino
+features:
+  - keys
+  - studio
