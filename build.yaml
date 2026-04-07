@@ -1,6 +1,6 @@
 include:
-  - board: nice_nano_v2
+  - board: nice_nano/nrf52840/zmk
     shield: cheapinov2
-  - board: rp2040_zero
+  - board: rp2040_zero/rp2040/zmk
     shield: cheapinov2_rp2040zero
 # there is no settingsreset (needed) for the XIAO
