@@ -3,7 +3,6 @@ id: cheapinov2
 name: Cheapino v2
 type: shield
 url: https://github.com/tompi/cheapino
-requires: [pro_micro]
 features:
   - keys
   - studio

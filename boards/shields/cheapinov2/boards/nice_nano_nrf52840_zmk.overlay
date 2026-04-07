@@ -1,0 +1,30 @@
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+/ {
+    cheapino_scan: kscan0 {
+        compatible = "zmk,kscan-gpio-charlieplex";
+
+        gpios
+            // Left side
+            = <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 0: L-Row0
+            , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 1: L-Row1
+            , <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 2: L-Row2
+            , <&pro_micro 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 3: L-Col0
+            , <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 4: L-Col1
+            , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 5: L-Col2
+
+            // Right side (rows 1+2 are swapped in PCB routing)
+            , <&pro_micro 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 6: R-Row0
+            , <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 7: R-Row1
+            , <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 8: R-Row2
+            // Col 0 right side is on a bodge wire to pro_micro pin 2 (VCC pad avoided)
+            , <&pro_micro 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 9:  R-Col0
+            , <&pro_micro 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 10: R-Col1
+            , <&pro_micro 18 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Pin 11: R-Col2
+            ;
+    };
+};

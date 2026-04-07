@@ -1,5 +1,0 @@
-# Copyright (c) 2022 The ZMK Contributors
-# SPDX-License-Identifier: MIT
-
-config SHIELD_CHEAPINOV2_RP2040ZERO
-    def_bool $(shields_list_contains,cheapinov2_rp2040zero)
