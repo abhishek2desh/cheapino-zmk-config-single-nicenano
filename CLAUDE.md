@@ -95,12 +95,14 @@ boards/shields/cheapino_wireless/
 
 | Index | Role | nRF52840 pin | RP2040 equiv |
 |-------|------|-------------|--------------|
-| 0 | Row0 | P1.11 | GP29 |
-| 1 | Row1 | P1.13 | GP28 |
-| 2 | Row2 | P1.15 | GP27 |
-| 3 | Col0 + thumb col | P0.02 | GP26 |
-| 4 | Col1 | P0.29 | GP15 |
-| 5 | Col2 | P0.31 | GP14 |
+| 0 | Top row | P1.15 | GP27 |
+| 1 | Middle row | P1.13 | GP28 |
+| 2 | Bottom row | P1.11 | GP29 |
+| 3 | Rightmost col (R/F/V + T/G/B) | P0.31 | GP14 |
+| 4 | Middle col (W/E + S/D + X/C) | P0.29 | GP15 |
+| 5 | Leftmost + thumb col (Q/A/Z + thumbs) | P0.02 | GP26 |
+
+Note: physical pin order from schematic is bottom-to-top for rows and left-to-right for cols, which is the **reverse** of the transform's index order (transform index 0 = top row, index 5 = leftmost/thumb col).
 
 ### Right half GPIO pin mapping
 
