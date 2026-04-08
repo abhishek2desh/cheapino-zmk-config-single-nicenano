@@ -31,3 +31,12 @@ A future variant with two independent halves and a USB dongle:
 8. Polish — power tuning, display widgets, keymap
 
 **Risk items to resolve early:** charlieplex vs matrix driver for duplex wiring; ZMK deep-sleep wake bug on main branch; nice!nano clone quiescent current.
+
+## Credits
+
+- **[tompi](https://github.com/tompi)** — original ZMK config this repo is forked from ([tompi/cheapino-zmk-config-single-nicenano](https://github.com/tompi/cheapino-zmk-config-single-nicenano)), and designer of the [Cheapino v2](https://github.com/tompi/cheapino) keyboard hardware (CC-BY-4.0).
+- **[ZMK Firmware](https://github.com/zmkfirmware/zmk)** — the open-source keyboard firmware this config targets.
+
+## License
+
+[MIT](LICENSE) © Oskar Lundstrom
