@@ -62,32 +62,46 @@ HOME-ROW MODS on BASE layer: `&mt` with `tap-preferred`, 150ms tapping term, `re
 
 ---
 
-## Planned: Wireless split variant
+## Wireless split variant
 
-Target architecture: two BLE peripheral halves + one USB central dongle. New repo or new shield in this repo (TBD).
+Target architecture: two BLE peripheral halves + one USB central dongle. Implemented in `boards/shields/cheapino_wireless/`.
 
-**Planned shield files:**
+**Shield files:**
 ```
 boards/shields/cheapino_wireless/
-├── cheapino_wireless.dtsi            ← transform, layout
-├── cheapino_wireless_left.overlay    ← kscan, OLED, battery
-├── cheapino_wireless_right.overlay
-├── cheapino_wireless_dongle.overlay  ← mock kscan, central role
+├── cheapino_wireless_left.overlay    ← kscan + transform for left half
+├── cheapino_wireless_right.overlay   ← kscan + transform for right half (pins TBD)
+├── cheapino_wireless_dongle.overlay  ← mock kscan, central role, physical layout
+├── Kconfig.shield
+├── Kconfig.defconfig
+├── cheapino_wireless_{left,right,dongle}.zmk.yml
 └── boards/
-    ├── nice_nano_nrf52840_zmk.overlay
-    └── nrf52840dongle_nrf52840_zmk.overlay
+    └── nice_nano_nrf52840_zmk.overlay  ← CDC ACM uart + zephyr,console for USB logging
 ```
 
-**Key config decisions to resolve before scaffolding:**
-- Charlieplex vs matrix driver — the Cheapino uses duplex (bidirectional) wiring; may need `zmk,kscan-gpio-matrix` scanned in two passes rather than the charlieplex driver.
-- Interrupt GPIO pin — one pin per half wired through 6× 1N4148 diodes for wake-from-sleep.
-- I2C pins for SSD1306 128×32 OLED display.
-- ZMK branch — check whether the deep-sleep central wake bug is fixed on `main` before pinning to v0.3.
-
-**Build targets (once ready):**
+**Build targets:**
 ```yaml
-- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_left
-- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_right
-- board: nice_nano/nrf52840/zmk   shield: cheapino_wireless_dongle
-- board: nrf52840dongle/nrf52840/zmk  shield: cheapino_wireless_dongle
+- board: nice_nano/nrf52840/zmk        shield: cheapino_wireless_left
+- board: nice_nano/nrf52840/zmk        shield: cheapino_wireless_right
+- board: nice_nano/nrf52840/zmk        shield: cheapino_wireless_dongle
+- board: nrf52840dongle/nrf52840/zmk   shield: cheapino_wireless_dongle
 ```
+
+**USB logging:** enabled only for dongle (`config/cheapino_wireless_dongle.conf`) and left half (`config/cheapino_wireless_left.conf`). The nice!nano ZMK variant lacks the `zephyr,cdc-acm-uart` DT node — added via `boards/nice_nano_nrf52840_zmk.overlay`.
+
+### Left half GPIO pin mapping (nice!nano v2)
+
+6 charlieplex pins in order. Pin ordering convention: Row0 (top), Row1 (middle), Row2 (bottom), Col0 (leftmost / thumb column), Col1, Col2 (rightmost).
+
+| Index | Role | nRF52840 pin | RP2040 equiv |
+|-------|------|-------------|--------------|
+| 0 | Row0 | P1.11 | GP29 |
+| 1 | Row1 | P1.13 | GP28 |
+| 2 | Row2 | P1.15 | GP27 |
+| 3 | Col0 + thumb col | P0.02 | GP26 |
+| 4 | Col1 | P0.29 | GP15 |
+| 5 | Col2 | P0.31 | GP14 |
+
+### Right half GPIO pin mapping
+
+Pins TBD — right overlay currently has placeholder pins.
