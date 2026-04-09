@@ -21,14 +21,16 @@ A future variant with two independent halves and a USB dongle:
 - **Dongle** — nice!nano v2 clone or nRF52840 USB-A dongle, BLE central → USB HID to PC
 
 **Rough phases:**
-1. Scaffold ZMK split config (left, right, dongle overlays)
-2. Single half over USB — verify key scan and interrupt wake
+1. ~~Scaffold ZMK split config (left, right, dongle overlays)~~
+2. ~~Single half over USB — verify key scan and interrupt wake~~
 3. Add OLED display
-4. Add battery
-5. Repeat for second half
-6. Wire up wireless split with dongle
-7. Flash production nRF52840 USB-A dongle
-8. Polish — power tuning, display widgets, keymap
+4. ~~Add battery~~ ✓ left half confirmed working on battery
+5. ~~Left half BLE → dongle producing keypresses~~ ✓ (keymap incorrect, needs fixing)
+6. Fix keymap / matrix pin mapping for left half
+7. Repeat for second half
+8. Wire up full wireless split with dongle
+9. Flash production nRF52840 USB-A dongle
+10. Polish — power tuning, display widgets, keymap
 
 **Risk items to resolve early:** charlieplex vs matrix driver for duplex wiring; ZMK deep-sleep wake bug on main branch; nice!nano clone quiescent current.
 
