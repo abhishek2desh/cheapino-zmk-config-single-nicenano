@@ -27,9 +27,9 @@
     kscan_left: kscan_left {
         compatible = "zmk,kscan-gpio-charlieplex";
         gpios
-            = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 0: top row    (GP27, P1.15) */
+            = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 0: (GP29, P1.11) — testing swap */
             , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 1: middle row (GP28, P1.13) */
-            , <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 2: bottom row (GP29, P1.11) */
+            , <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 2: (GP27, P1.15) — testing swap */
             , <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 3: rightmost col (GP14, P0.31) */
             , <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 4: middle col    (GP15, P0.29) */
             , <&gpio0  2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  /* Pin 5: leftmost + thumb col (GP26, P0.02) */
