@@ -2,5 +2,4 @@ include:
   - board: nice_nano
     shield: cheapinov2 raw_hid_adapter # <-- required for Raw HID support
     snippet: studio-rpc-usb-uart # <-- required for ZMK Studio support
-
 # there is no settingsreset (needed) for the XIAO
