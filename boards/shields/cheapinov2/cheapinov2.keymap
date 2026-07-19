@@ -71,6 +71,13 @@
             key-positions = <26 32>; // Combo `m+space`
             bindings = <&mo SYST>;
         };
+
+        combo_studio_unlock {
+            timeout-ms = <300>;
+            key-positions = <1 2 3 14>; // Combo `W+E+R+G` — unlikely accidental press
+            bindings = <&studio_unlock>;
+        };
+
     };
 
     behaviors {
